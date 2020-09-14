@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, Dimensions, TouchableHighlight, BackHandler, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import EmptyListItem from './EmptyListItem';
-import Axios from 'axios'
+import Axios from 'axios';
+import config from './config';
 
 export default class CheckedListModal extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ export default class CheckedListModal extends Component {
     trainData = () => {
         console.log("training data: ", [...this.state.checkedData])
         this.props.onClose()
-        let url = "http://192.168.43.205:5050/training"
+        let url = config.baseUrlTraining + `/training_from`;
         Axios.post(url, {
             listStudent: [...this.state.checkedData],
           })

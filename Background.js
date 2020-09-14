@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, TouchableOpacity, ActivityIndicator } f
 import Axios from 'axios'
 import { Picker } from '@react-native-community/picker';
 import CheckListModal from './CheckCoursesModal';
+import config from './config';
 
 class Background extends Component {
   constructor(props) {
@@ -14,27 +15,16 @@ class Background extends Component {
       isLoading: false,
       showStudentModal: false,
       students_train: [],
-      // students_train: [{"-id": 123, "name": "To Thanh Sang", "studentID": "16130546"},
-      //                  {"_id": 123, "name": "Nguyen Hieu","studentID": "16130379"}]
     })
   }
 
   componentDidMount() {
-    let url = "http://192.168.43.205:5000/students";
+    // let url = config.baseUrl + `/students/getAll`;
+    let url = config.baseUrl + `/students`;
     Axios.get(url)
       .then((response) => {
         console.log("response: ", response.data)
         this.setState({
-          // students:  [
-          //     {
-          //       "studentID": "1597865496895E6ZJo",
-          //       "name": "Nhap mon tri tue nhan tao"
-          //     },
-          //     {
-          //       "studentID": "1597865515258H3YmJ",
-          //       "name": "Ly thuyet do thi"
-          //     }
-          //   ]
           students: response.data.data,
           students_train: response.data.data,
         })
@@ -57,8 +47,8 @@ class Background extends Component {
   trainData = () => {
     console.log("training data")
     this.setState({ showStudentModal: true })
-    this.setState({ isLoading: true });
-    // Axios.get("http://192.168.43.205:5000/training")
+    // this.setState({ isLoading: true });
+    // Axios.get("http://192.168.1.179:5000/training")
     //   .then((response) => {
     //     console.log("response: ", response.data)
     //     this.setState({ isLoading: false });
@@ -72,7 +62,8 @@ class Background extends Component {
     console.log("training all")
     // this.setState({ showStudentModal: true })
     this.setState({ isLoading: true });
-    Axios.get("http://192.168.43.205:5000/training")
+    let url = config.baseUrlTraining + `/training`;
+    Axios.get(url)
       .then((response) => {
         console.log("response: ", response.data)
         this.setState({ isLoading: false });
@@ -112,7 +103,7 @@ class Background extends Component {
             justifyContent: 'center',
             borderRadius: 4,
             padding: 15,
-            marginTop: 200,
+            marginTop: 150,
             marginBottom: 10,
             marginLeft: 60,
             marginRight: 60,
@@ -130,8 +121,8 @@ class Background extends Component {
               justifyContent: 'center',
               borderRadius: 4,
               padding: 15,
-              marginTop: 30,
-              marginBottom: 20,
+              marginTop: 40,
+              marginBottom: 10,
               marginLeft: 60,
               marginRight: 60,
             }}>
@@ -139,6 +130,27 @@ class Background extends Component {
             <Text style={{ color: 'white', fontSize: 20, fontWeight: '800' }}>
               Take Picture
                   </Text>
+          </View>
+          {/* } */}
+        </TouchableOpacity>
+
+             {/* Training Data */}
+             <TouchableOpacity onPress={() => this.trainData()}>
+          {/* {!this.state.isLoading && */}
+          <View
+            style={{
+              backgroundColor: '#ff6500',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 4,
+              padding: 15,
+              marginBottom: 10,
+              marginLeft: 60,
+              marginRight: 60,
+            }}>
+            <Text style={{ color: 'white', fontSize: 20, fontWeight: '800' }}>
+              Training Data
+              </Text>
           </View>
           {/* } */}
         </TouchableOpacity>
@@ -153,33 +165,12 @@ class Background extends Component {
               justifyContent: 'center',
               borderRadius: 4,
               padding: 15,
-              marginBottom: 30,
+              marginBottom: 10,
               marginLeft: 60,
               marginRight: 60,
             }}>
             <Text style={{ color: 'white', fontSize: 20, fontWeight: '800' }}>
-              Train All
-              </Text>
-          </View>
-          {/* } */}
-        </TouchableOpacity>
-
-        {/* Training Data */}
-        <TouchableOpacity onPress={() => this.trainData()}>
-          {/* {!this.state.isLoading && */}
-          <View
-            style={{
-              backgroundColor: '#ff6500',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 4,
-              padding: 15,
-              marginBottom: 30,
-              marginLeft: 60,
-              marginRight: 60,
-            }}>
-            <Text style={{ color: 'white', fontSize: 20, fontWeight: '800' }}>
-              Training Data
+              Train All Data
               </Text>
           </View>
           {/* } */}

@@ -4,9 +4,11 @@ import { RNCamera } from 'react-native-camera';
 import RNRestart from 'react-native-restart';
 import StackActions from '@react-navigation/native';
 import Axios from 'axios'
+import config from './config';
 
 class Home extends Component {
     constructor(props) {
+        // console.log(props.navigation.goBack())
         super(props)
         this.state = ({
             id: ''
@@ -47,20 +49,8 @@ class Home extends Component {
         if (this.camera) {
             const options = { base64: true };
             const data = await this.camera.takePictureAsync(options);
-            //   console.log("take picture", this.state.id)
-            // fetch('http://192.168.0.111:5000/recognition', {
-            //     method: 'POST',
-            //     headers: {
-            //         Accept: 'application/json',
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({
-            //         img: data.base64,
-            //         id: this.state.id
-            //     })
-            // });
-
-            let url = "http://192.168.43.205:5000/saveimage"
+            
+            let url = config.baseUrl + `/saveimagegray`;
             Axios.post(url, {
                 img: data.base64,
                 id: this.state.id
@@ -68,15 +58,13 @@ class Home extends Component {
               .then(function (response) {
                 //   alert(JSON.stringify(response.data));
                 if(response.data == "full_image"){
-                    ToastAndroid.show(JSON.stringify(response.data), ToastAndroid.SHORT);
-                    this.props.navigation.dispatch(StackActions.popToTop());
-                    // console.log("props: ",this.props.navigation)
+                    ToastAndroid.show(JSON.stringify("Full Image"), ToastAndroid.SHORT);
+                    // this.props.navigation.goBack()
                 }
               })
               .catch(function (error) {
                 console.log(error);
               });
-
         };
     }
 }
